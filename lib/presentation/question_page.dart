@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quiz/presentation/answer_button.dart';
 import 'package:quiz/presentation/question_bloc.dart';
+import 'package:quiz/presentation/style/colors.dart';
 
 import '../domain/entity/question_entity.dart';
 
@@ -34,11 +36,15 @@ class _QuestionPageState extends State<QuestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Container(
         width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [backgroundTopColor, backgroundBottomColor],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight
+          )
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: FutureBuilder<List<QuestionEntity>>(
@@ -49,30 +55,39 @@ class _QuestionPageState extends State<QuestionPage> {
               }
               _questions = snapshot.data!;
               return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Expanded(child:
+                  Image.asset("assets/images/quiz_image.png",
+                    scale: 0.5,
+                  )),
+                  Text("question ${_index+1} of ${_questions.length}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: questionIndexColor,
+                    ),
+                  ),
                   const SizedBox(height: 20,),
                   Text(_questions[_index].text!,
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
-                      color: Colors.deepOrange,
+                      color: questionColor,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 50,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: _questions[_index].answers!.map((answer) {
-                      return Container(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            onPressed: () => _answerQuestion(answer),
-                            child: Text(answer)
-                        ),
+                      return AnswerButton(
+                        answer: answer,
+                        onPressed: () => _answerQuestion(answer),
                       );
                     }
                     ).toList(),
                   ),
+                  const SizedBox(height: 20,),
                 ],
               );
             },

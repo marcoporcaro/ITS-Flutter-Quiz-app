@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quiz/question.dart';
-import 'package:quiz/question_bloc.dart';
+import 'package:quiz/presentation/question_bloc.dart';
+
+import '../domain/entity/question_entity.dart';
 
 
 class QuestionPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> {
   int _index = 0;
   final QuestionBloc _questionBloc = QuestionBloc();
-  List<Question> _questions = [];
+  List<QuestionEntity> _questions = [];
 
 
   void _goToNextQuestion() {
@@ -27,6 +28,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   void _answerQuestion(String userAnswer) {
     if(_questions[_index].correctAnswer != userAnswer) return;
+    _goToNextQuestion();
   }
 
   @override
@@ -39,17 +41,17 @@ class _QuestionPageState extends State<QuestionPage> {
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: FutureBuilder<List<Question>>(
+          child: FutureBuilder<List<QuestionEntity>>(
             future: _questionBloc.getQuestions(),
-            builder: (BuildContext context, AsyncSnapshot<List<Question>> snapshot) {
-              if(snapshot.connectionState != ConnectionState.done) {
+            builder: (BuildContext context, AsyncSnapshot<List<QuestionEntity>> snapshot) {
+              if(snapshot.connectionState != ConnectionState.done || snapshot.data == null) {
                 return const Center(child: CircularProgressIndicator());
               }
               _questions = snapshot.data!;
               return Column(
                 children: [
                   const SizedBox(height: 20,),
-                  Text(_questions[_index].text,
+                  Text(_questions[_index].text!,
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
@@ -60,7 +62,7 @@ class _QuestionPageState extends State<QuestionPage> {
                   const SizedBox(height: 20,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: _questions[_index].answers.map((answer) {
+                    children: _questions[_index].answers!.map((answer) {
                       return Container(
                         width: double.infinity,
                         child: ElevatedButton(

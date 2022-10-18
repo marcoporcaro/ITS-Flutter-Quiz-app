@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:quiz/presentation/style/colors.dart';
 
-class AnswerButton extends StatefulWidget {
+class AnswerButton extends StatelessWidget {
 
   final String answer;
-  final bool isCorrect;
+  final AnswerState answerState;
   final VoidCallback onPressed;
+
   const AnswerButton({Key? key,
     required this.answer,
-    required this.isCorrect,
+    required this.answerState,
     required this.onPressed}) : super(key: key);
 
-  @override
-  State<AnswerButton> createState() => _AnswerButtonState();
-}
-
-class _AnswerButtonState extends State<AnswerButton> {
-
-  bool hasBeenPressed = false;
 
   @override
   Widget build(BuildContext context) {
     var buttonColor = answerButtonColor;
     var textColor = answerButtonTextColor;
-    if(hasBeenPressed) {
-      textColor = answeredButtonTextColor;
-      if(widget.isCorrect) {
+
+    switch(answerState) {
+      case AnswerState.correct:
         buttonColor = answerButtonColorRight;
-      }
-      else {
+        textColor = answeredButtonTextColor;
+        break;
+      case AnswerState.wrong:
         buttonColor = answerButtonColorWrong;
-      }
+        textColor = answeredButtonTextColor;
+        break;
+      case AnswerState.none:
+        buttonColor = answerButtonColor;
+        textColor = answerButtonTextColor;
+        break;
     }
 
     return Padding(
@@ -47,13 +47,8 @@ class _AnswerButtonState extends State<AnswerButton> {
               onPrimary: textColor,
               elevation: 10,
             ),
-            onPressed: () {
-              setState(() {
-                hasBeenPressed = true;
-              });
-              widget.onPressed();
-            },
-            child: Text(widget.answer,
+            onPressed: onPressed,
+            child: Text(answer,
               style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600
@@ -62,4 +57,10 @@ class _AnswerButtonState extends State<AnswerButton> {
       ),
     );
   }
+}
+
+enum AnswerState {
+  correct,
+  wrong,
+  none
 }

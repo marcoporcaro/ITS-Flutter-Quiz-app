@@ -28,8 +28,9 @@ class _QuestionPageState extends State<QuestionPage> {
     });
   }
 
-  void _answerQuestion(String userAnswer) {
-    if(_questions[_index].correctAnswer != userAnswer) return;
+  void _answerQuestion(String userAnswer) async {
+    await Future.delayed(const Duration(seconds: 2));
+    // if(_questions[_index].correctAnswer != userAnswer) return;
     _goToNextQuestion();
   }
 
@@ -82,6 +83,7 @@ class _QuestionPageState extends State<QuestionPage> {
                     children: _questions[_index].answers!.map((answer) {
                       return AnswerButton(
                         answer: answer,
+                        isCorrect: answer == _questions[_index].correctAnswer,
                         onPressed: () => _answerQuestion(answer),
                       );
                     }

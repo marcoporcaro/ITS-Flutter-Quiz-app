@@ -17,6 +17,7 @@ extension QuestionMapper on QuestionResponse {
     return results?.map((e) {
       var answers = e.incorrectAnswers ?? List.empty();
       answers.add(e.correctAnswer ?? "");
+      answers.shuffle();
       return QuestionEntity(
           text: e.question?.replaceAll("&#039;", "\"").replaceAll("&quot;", "\""),
           correctAnswer: e.correctAnswer,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quiz/presentation/question/question_page.dart';
 
 class HomePage extends StatelessWidget {
+  static const route = "/home";
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -10,11 +12,7 @@ class HomePage extends StatelessWidget {
       child: ElevatedButton(
         child: const Text("Go to questions"),
         onPressed: () {
-            Navigator.push(
-                context,
-              MaterialPageRoute(
-                  builder: (context) => const QuestionPage(title: "Quiz"))
-            );
+            Navigator.pushNamed(context, QuestionPage.route, arguments: "Quiz");
         },
       ),
     );

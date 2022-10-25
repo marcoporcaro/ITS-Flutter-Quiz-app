@@ -17,8 +17,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
-      );
+      routes: {
+        HomePage.route: (context) => const HomePage(),
+        QuestionPage.route: (context) => const QuestionPage()
+      },
+      initialRoute: HomePage.route,
+    );
   }
 }
 

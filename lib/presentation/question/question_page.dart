@@ -6,15 +6,17 @@ import 'package:quiz/presentation/style/colors.dart';
 
 
 class QuestionPage extends StatefulWidget {
-  const QuestionPage({Key? key, required this.title}) : super(key: key);
+  static const route = "/question";
 
-  final String title;
+  const QuestionPage({Key? key}) : super(key: key);
+
 
   @override
   State<QuestionPage> createState() => _QuestionPageState();
 }
 
 class _QuestionPageState extends State<QuestionPage> {
+
   final QuestionBloc _questionBloc = QuestionBloc();
 
   @override
@@ -25,6 +27,8 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final title = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
       body: Container(
         width: double.infinity,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quiz/presentation/answer_button.dart';
-import 'package:quiz/presentation/question_bloc.dart';
-import 'package:quiz/presentation/question_page_state.dart';
+import 'package:quiz/presentation/question/answer_button.dart';
+import 'package:quiz/presentation/question/question_bloc.dart';
+import 'package:quiz/presentation/question/question_page_state.dart';
 import 'package:quiz/presentation/style/colors.dart';
 
 

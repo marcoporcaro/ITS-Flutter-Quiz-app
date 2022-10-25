@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:quiz/domain/entity/question_entity.dart';
-import 'package:quiz/presentation/question_page_state.dart';
+import 'package:quiz/presentation/question/question_page_state.dart';
 
 class QuestionBloc {
 

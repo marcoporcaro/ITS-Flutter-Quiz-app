@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:quiz/data/response/question_response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -8,6 +9,10 @@ import 'package:quiz/domain/entity/question_entity.dart';
 import 'package:quiz/presentation/question/question_page_state.dart';
 
 class QuestionBloc {
+  final int category;
+  final String difficulty;
+
+  QuestionBloc({required this.category, this.difficulty = "easy"});
 
   StreamController<QuestionPageState> pageState = StreamController.broadcast();
   StreamController<int> timer = StreamController.broadcast();
@@ -61,8 +66,8 @@ class QuestionBloc {
   }
 
   Future<List<QuestionEntity>> _retrieveQuestions() async {
-
-    var url = Uri.parse("https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple");
+    var url = Uri.parse("https://opentdb.com/api.php?amount=10&category=$category&difficulty=$difficulty&type=multiple");
+    debugPrint("url: $url");
     var response = await http.get(url);
     try {
       if (response.statusCode == 200) {

@@ -6,19 +6,21 @@ import 'package:quiz/presentation/style/colors.dart';
 
 
 class QuestionPage extends StatefulWidget {
-  const QuestionPage({Key? key, required this.title}) : super(key: key);
+  const QuestionPage({Key? key, required this.title, required this.category}) : super(key: key);
 
   final String title;
+  final int category;
 
   @override
   State<QuestionPage> createState() => _QuestionPageState();
 }
 
 class _QuestionPageState extends State<QuestionPage> {
-  final QuestionBloc _questionBloc = QuestionBloc();
+  late QuestionBloc _questionBloc;
 
   @override
   void initState() {
+    _questionBloc = QuestionBloc(category: widget.category);
     _questionBloc.getQuestions();
     super.initState();
   }

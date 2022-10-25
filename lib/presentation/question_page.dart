@@ -35,85 +35,93 @@ class _QuestionPageState extends State<QuestionPage> {
                 end: Alignment.bottomRight
             )
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              StreamBuilder<int>(
-                  stream: _questionBloc.timer.stream,
-                  builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                    if(snapshot.data != null) {
-                      return Text("${snapshot.data}");
-                    } else {
-                      return const Text("");
-                    }
-                  }
-              ),
-              Expanded(
-                child: StreamBuilder<QuestionPageState>(
-                  stream: _questionBloc.pageState.stream,
-                  builder: (BuildContext context, AsyncSnapshot<QuestionPageState> snapshot) {
-                    if(snapshot.data == null) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    var currentQuestion = snapshot.data!.currentQuestion;
-                    var questionIndex = snapshot.data!.questionIndex;
-                    var questionsCount = snapshot.data!.questionsCount;
-                    var hasBeenAnswered = snapshot.data!.hasBeenAnswered;
-
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(child:
-                        Image.asset("assets/images/quiz_image.png",
-                          scale: 0.5,
-                        )),
-                        Text("question $questionIndex of $questionsCount",
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                StreamBuilder<int>(
+                    stream: _questionBloc.timer.stream,
+                    builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                      if(snapshot.data != null) {
+                        return Text("${snapshot.data}",
                           style: const TextStyle(
-                            fontSize: 18,
-                            color: questionIndexColor,
-                          ),
-                        ),
-                        const SizedBox(height: 20,),
-                        Text(currentQuestion.text!,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                            color: questionColor,
-                          ),
-                        ),
-                        const SizedBox(height: 50,),
-                        AbsorbPointer(
-                          absorbing: hasBeenAnswered,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: currentQuestion.answers!.map((answer) {
-                              var answerState = AnswerState.none;
-                              if(hasBeenAnswered) {
-                                if(answer == currentQuestion.correctAnswer) {
-                                  answerState = AnswerState.correct;
-                                }
-                                else {
-                                  answerState = AnswerState.wrong;
-                                }
-                              }
-                              return AnswerButton(
-                                answer: answer,
-                                answerState: answerState,
-                                onPressed: () => _questionBloc.answerQuestion(answer),
-                              );
-                            }
-                            ).toList(),
-                          ),
-                        ),
-                        const SizedBox(height: 20,),
-                      ],
-                    );
-                  },
+                            color: Colors.white,
+                            fontSize: 24
+                          ),);
+                      } else {
+                        return const Text("");
+                      }
+                    }
                 ),
-              ),
-            ],
+                Expanded(
+                  child: StreamBuilder<QuestionPageState>(
+                    stream: _questionBloc.pageState.stream,
+                    builder: (BuildContext context, AsyncSnapshot<QuestionPageState> snapshot) {
+                      if(snapshot.data == null) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      var currentQuestion = snapshot.data!.currentQuestion;
+                      var questionIndex = snapshot.data!.questionIndex;
+                      var questionsCount = snapshot.data!.questionsCount;
+                      var hasBeenAnswered = snapshot.data!.hasBeenAnswered;
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              child: Center(
+                                child: Image.asset("assets/images/quiz_image.png",
+                            scale: 0.5,
+                          ),
+                              )),
+                          Text("question $questionIndex of $questionsCount",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: questionIndexColor,
+                            ),
+                          ),
+                          const SizedBox(height: 20,),
+                          Text(currentQuestion.text!,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                              color: questionColor,
+                            ),
+                          ),
+                          const SizedBox(height: 50,),
+                          AbsorbPointer(
+                            absorbing: hasBeenAnswered,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: currentQuestion.answers!.map((answer) {
+                                var answerState = AnswerState.none;
+                                if(hasBeenAnswered) {
+                                  if(answer == currentQuestion.correctAnswer) {
+                                    answerState = AnswerState.correct;
+                                  }
+                                  else {
+                                    answerState = AnswerState.wrong;
+                                  }
+                                }
+                                return AnswerButton(
+                                  answer: answer,
+                                  answerState: answerState,
+                                  onPressed: () => _questionBloc.answerQuestion(answer),
+                                );
+                              }
+                              ).toList(),
+                            ),
+                          ),
+                          const SizedBox(height: 20,),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

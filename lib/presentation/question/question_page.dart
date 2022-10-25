@@ -30,6 +30,11 @@ class _QuestionPageState extends State<QuestionPage> {
     final title = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      extendBodyBehindAppBar: true,
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(

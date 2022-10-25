@@ -8,13 +8,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        child: const Text("Go to questions"),
-        onPressed: () {
-            Navigator.pushNamed(context, QuestionPage.route, arguments: "Quiz");
-        },
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text("Go to questions"),
+          onPressed: () {
+            Navigator.pushNamed(context, QuestionPage.route, arguments: "Ciao");
+          },
+        ),
       ),
     );
+
   }
 }
